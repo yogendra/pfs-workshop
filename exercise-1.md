@@ -9,7 +9,7 @@ In this exercise we will do some simple method creation, upd ate, invoke and del
 First we create a function.
 
 ```
-pfs function create wordcount --git-repo https://github.com/yogendra/pfs-workshop --artifact code/command-function/wordcount.sh
+pfs function create wordcount --git-repo https://github.com/yogendra/pfs-command-wordcount.git --artifact wordcount.sh
 ```
 
 > _Tip_: you can fork the sample repo and swap out the name. This way you do not need to wait for instructor
@@ -57,6 +57,14 @@ Let's invoke this one more time with lots of data. Lets see which word appears m
 ```
 curl -s https://www.usconstitution.net/const.txt | pfs service invoke wordcount  --text -- -d  @-
 ```
+
+How about invoking this via url? Thats easy! Every service gets its own route. Route will look like `<service-name>.<namespace>.example.com`. So this `wordcount` service can be invoked via:
+
+```
+curl http://wordcount.default.pfs.atwater.cf-app.com --data "this is a simple text to get count of words in a sentence"
+```
+
+You will need to replace `default` with your own namespace.
 
 ## Whats under the hood?
 
