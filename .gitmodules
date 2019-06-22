@@ -1,3 +1,6 @@
 [submodule "code/command-wordcount"]
 	path = code/command-wordcount
 	url = https://github.com/yogendra/pfs-command-wordcount.git
+[submodule "code/node-square"]
+	path = code/node-square
+	url = https://github.com/yogendra/pfs-node-square.git
