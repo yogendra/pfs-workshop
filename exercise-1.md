@@ -9,7 +9,7 @@ In this exercise we will do some simple method creation, upd ate, invoke and del
 First we create a function.
 
 ```
-pfs function create wordcount --git-repo https://github.com/yogendra/pfs-command-wordcount --artifact wordcount.sh
+pfs function create wordcount --git-repo https://github.com/yogendra/pfs-workshop --artifact code/command-function/wordcount.sh
 ```
 
 > _Tip_: you can fork the sample repo and swap out the name. This way you do not need to wait for instructor
