@@ -10,12 +10,14 @@ function get_config {
     user=user-$i
     user_name=$user
     namespace=$user_name-ns
-    config_file=$SCRIPT_ROOT/users/$user
+    user_root=$users_root/$user
+    config_file=$user_root/config
 
-
+    echo "Getting token"
     user_token=$(kubectl get secret $(kubectl get sa $user_name -n ${namespace} -o json | jq -r .secrets[0].name) -n ${namespace} -o json | jq -r .data.token | base64 -d)
-
-    mkdir -p $user_root
+    
+    [[ ! -e $user_root ]] && mkdir -p $user_root
+    echo "writing $config_file"
     cat <<EOF > $config_file
 apiVersion: v1
 clusters:
