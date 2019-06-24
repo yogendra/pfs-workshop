@@ -8,7 +8,7 @@ kubernetes_ca=Ci0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQpNSUlDK3pDQ0FlT2dBd0lCQWdJVV
 
 users_start=01
 users_end=99
-
+users_root=`dirname $0`/users
 managed_zone=atwater-zone
 
 
