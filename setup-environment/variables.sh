@@ -11,6 +11,7 @@ users_end=99
 users_root=`dirname $0`/users
 managed_zone=atwater-zone
 
+gcr_json=`dirname $0`/gcr-storage-admin.json 
 
 # ip=$(kubectl get service/istio-ingressgateway --namespace istio-system -o=json  | jq '.status.loadBalancer.ingress[0].ip' -r)
 ip=34.67.190.62
