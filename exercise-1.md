@@ -223,7 +223,3 @@ No resources found
 
 pfs service list completed successfully
 ```
-
-## Extra Credits
-
-Try creating function from node js app. There is a sample at `https://github.com/yogendra/pfs-node-square.git"
