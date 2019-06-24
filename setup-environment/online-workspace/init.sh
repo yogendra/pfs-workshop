@@ -24,6 +24,10 @@ chmod a+x kubectl
 mv kubectl /usr/local/bin
 kubectl completion bash >/etc/bash_completion.d/kubectl
 
+curl -sLO   https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/online-workspace/pfs.linux 
+chmod a+x pfs.linux 
+mv pfs.linux /usr/local/bin
+
 #Setup codiad
 (cd /default-code; git pull --rebase)
 curl -sLO https://github.com/Andr3as/Codiad-CodeGit/archive/master.zip
