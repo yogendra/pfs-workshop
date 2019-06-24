@@ -1,18 +1,16 @@
-# Exercise 2 : Channels and Subscriptions
+# Exercise 2 : Java Script and Java Based Function
+
+[Previous Exercise](exercise-1.md) | [Back to Main](README.md) | [Next Exercise](exercise-3.md)
 
 **Duration: 30 min**
+We have so far created function with simple shell script. Lets create function using JS and Java langauge now.
 
-So far we have only invoked our functions directly using `pfs servuce invoke` or `curl`. This is a direct invocation and caused a hard coupleing between consumer and service. Modern workloads almost mandates having flexible integration. This is where channels and subscription come in.
+## Function with JavaScript
 
-![Channels and Subscription](images/eventing-concept.png)
+We will create a simple function to square a number.
 
+```
+> pfs function create
+```
 
-Channels are essentially like 'conduits' or 'pipes' carrying data. Subscription is a mechanism to extract or connect that stream of data to a service. 
-
-
-Let use examine this in action
-
-
-## Create a channel
-
-
+[Previous](exercise-1.md) | [Back to Main](README.md) | [Next](exercise-3.md)
