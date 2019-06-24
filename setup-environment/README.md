@@ -27,7 +27,7 @@ docker-machine create \
   -d google \
   --google-disk-size 100 \
   --google-machine-type n1-standard-16 \
-  --google-open-port 10000-10099/tcp \
+  --google-open-port 10000-10099/tcp,8080/tcp,8443/tcp,80/tcp,443/tcp,9000/tcp,8081/tcp \
   --google-project pa-yrampuria \
   --google-zone asia-southeast1-a \
   workspace
