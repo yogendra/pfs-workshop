@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
 
-# managed_zone=atwater-zone
-managed_zone=$1
-# ip=$(kubectl get service/istio-ingressgateway --namespace istio-system -o=json  | jq '.status.loadBalancer.ingress[0].ip' -r)
-# ip=34.67.190.62
-ip=$2
-# root_domain=$(kubectl get cm/config-domain --namespace knative-serving -o=json | jq '.data| keys[0]' -r)
-# root_domain=pfs.atwarer.cf-app.com
-root_domain=$3
+source `dirname $0`/variables.sh
+
+SCRIPT_ROOT=$(cd  `dirname $0`; pwd)
 
 
 function dns-txn {
@@ -46,11 +41,12 @@ setup_dns_record $managed_zone $ingress $ip A
 # Setup default namespace
 setup_dns_record $managed_zone \*.default.$root_domain ${ingress}. CNAME
 
-echo {00..99} | tr ' ' \\n | while read i
-do
-    user=user-$i
+function prepare_dns {
+    user=user-$1
     namespace=$user-ns
     setup_dns_record $managed_zone \*.$namespace.$root_domain ${ingress}. CNAME
-done
+}
+
+run prepare_dns $*
 
 dns-txn execute
