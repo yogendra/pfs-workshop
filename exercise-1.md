@@ -1,4 +1,4 @@
-# Simple Function
+# Exercise - 1 : Simple Function
 
 **Duration: 30 min**
 
