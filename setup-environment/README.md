@@ -20,14 +20,28 @@
 
 ## Docker Machine for Workspace
 
-Create a docker machine with name `pfs-workshop`
+Create a docker machine with name `workspace`
 
 ```
-docker-machine create -d google --google-disk-size 100 --google-machine-type n1-standard-16 --google-open-port 10000-10099/tcp --google-project pa-yrampuria --google-zone asia-southeast1-a pfs-workshop
+docker-machine create \
+  -d google \
+  --google-disk-size 100 \
+  --google-machine-type n1-standard-16 \
+  --google-open-port 10000-10099/tcp \
+  --google-project pa-yrampuria \
+  --google-zone asia-southeast1-a \
+  workspace
 ```
 
 Copy all the user config into the machine
 
 ```
-docker-machine scp users pfs-workshop:/home/docker-user
+./prepare-accounts.sh
+docker-machine scp -q -r users workspace:/home/docker-user
+```
+
+## Run docker containers for users
+
+```
+./run-workspace.sh
 ```
