@@ -1,0 +1,120 @@
+apiVersion: build.knative.dev/v1alpha1
+kind: ClusterBuildTemplate
+metadata:
+  name: riff-cnb
+spec:
+  parameters:
+    - name: IMAGE
+      description: The image you wish to create. For example, "repo/example", or "example.com/repo/image".
+    - name: FUNCTION_ARTIFACT
+      default: ""
+      description: Path to the function artifact, source code or jar file (attempts
+        detection if not specified)
+    - name: FUNCTION_HANDLER
+      default: ""
+      description: Name of method or class to invoke (see specific invoker for detail)
+    - name: FUNCTION_LANGUAGE
+      default: ""
+      description: Explicit language to use for the function, will skip detection.
+    - name: RUN_IMAGE
+      description: The run image buildpacks will use as the base for IMAGE.
+      default: docker.io/packs/run@sha256:99dee5262498d21b302321fd5d7b889c1685bfbd0ea12a64f786d91232e52278
+    - name: BUILDER_IMAGE
+      description: The builder image provides the buildpacks that will build the IMAGE from source.
+      default: docker.io/projectriff/builder@sha256:dccac174b2e80186aab20ed3a52a61e8a69d6c023e16f45c53c6385d7f5b5c4c
+    - name: USE_CRED_HELPERS
+      description: Use Docker credential helpers for Google's GCR, Amazon's ECR, or Microsoft's ACR.
+      default: 'true'
+    - name: USER_ID
+      description: The user ID of the builder image user
+      default: "1000"
+    - name: GROUP_ID
+      description: The group ID of the builder image user
+      default: "1000"
+    - name: CACHE
+      description: The name of the volume to use for the build cache.
+      default: empty-dir
+  steps:
+    - name: prepare
+      image: docker.io/library/ubuntu@sha256:b36667c98cf8f68d4b7f1fb8e01f742c2ed26b5f0c965a788e98dfe589a4b3e4
+      command: ["/bin/sh"]
+      args:
+        - "-c"
+        - >
+          chown -R "${USER_ID}:${GROUP_ID}" "/builder/home" &&
+          chown -R "${USER_ID}:${GROUP_ID}" /layers &&
+          chown -R "${USER_ID}:${GROUP_ID}" /workspace
+      volumeMounts:
+        - name: ${CACHE}
+          mountPath: /layers
+      imagePullPolicy: Always
+    - name: detect
+      image: ${BUILDER_IMAGE}
+      command: ["/lifecycle/detector"]
+      args:
+        - "-app=/workspace"
+        - "-group=/layers/group.toml"
+        - "-plan=/layers/plan.toml"
+      env:
+      - name: RIFF
+        value: "true"
+      - name: RIFF_ARTIFACT
+        value: ${FUNCTION_ARTIFACT}
+      - name: RIFF_HANDLER
+        value: ${FUNCTION_HANDLER}
+      - name: RIFF_OVERRIDE
+        value: ${FUNCTION_LANGUAGE}
+      volumeMounts:
+        - name: ${CACHE}
+          mountPath: /layers
+      imagePullPolicy: Always
+    - name: analyze
+      image: ${BUILDER_IMAGE}
+      command: ["/lifecycle/analyzer"]
+      args:
+        - "-layers=/layers"
+        - "-helpers=${USE_CRED_HELPERS}"
+        - "-group=/layers/group.toml"
+        - "${IMAGE}"
+      volumeMounts:
+        - name: ${CACHE}
+          mountPath: /layers
+      imagePullPolicy: Always
+    - name: build
+      image: ${BUILDER_IMAGE}
+      command: ["/lifecycle/builder"]
+      args:
+        - "-layers=/layers"
+        - "-app=/workspace"
+        - "-group=/layers/group.toml"
+        - "-plan=/layers/plan.toml"
+      env:
+      - name: RIFF
+        value: "true"
+      - name: RIFF_ARTIFACT
+        value: ${FUNCTION_ARTIFACT}
+      - name: RIFF_HANDLER
+        value: ${FUNCTION_HANDLER}
+      - name: RIFF_OVERRIDE
+        value: ${FUNCTION_LANGUAGE}
+      volumeMounts:
+        - name: ${CACHE}
+          mountPath: /layers
+      imagePullPolicy: Always
+    - name: export
+      image: ${BUILDER_IMAGE}
+      command: ["/lifecycle/exporter"]
+      args:
+        - "-layers=/layers"
+        - "-helpers=${USE_CRED_HELPERS}"
+        - "-app=/workspace"
+        - "-image=${RUN_IMAGE}"
+        - "-group=/layers/group.toml"
+        - "${IMAGE}"
+      volumeMounts:
+        - name: ${CACHE}
+          mountPath: /layers
+      imagePullPolicy: Always
+  volumes:
+    - name: empty-dir
+      emptyDir: {}

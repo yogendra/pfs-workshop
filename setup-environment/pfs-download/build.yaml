@@ -1,0 +1,459 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-build
+
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: knative-build
+spec:
+  allowPrivilegeEscalation: false
+  fsGroup:
+    ranges:
+    - max: 65535
+      min: 1
+    rule: MustRunAs
+  hostIPC: false
+  hostNetwork: false
+  hostPID: false
+  privileged: false
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    ranges:
+    - max: 65535
+      min: 1
+    rule: MustRunAs
+  volumes:
+  - configMap
+  - secret
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: knative-build-admin
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - namespaces
+  - secrets
+  - events
+  - serviceaccounts
+  - configmaps
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - extensions
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - build.knative.dev
+  resources:
+  - builds
+  - buildtemplates
+  - clusterbuildtemplates
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - build.knative.dev
+  resources:
+  - builds/status
+  - buildtemplates/status
+  - clusterbuildtemplates/status
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - patch
+  - watch
+- apiGroups:
+  - caching.internal.knative.dev
+  resources:
+  - images
+  verbs:
+  - get
+  - list
+  - create
+  - update
+  - delete
+  - deletecollection
+  - patch
+  - watch
+- apiGroups:
+  - policy
+  resourceNames:
+  - knative-build
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-controller
+  namespace: knative-build
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: build-controller-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: knative-build-admin
+subjects:
+- kind: ServiceAccount
+  name: build-controller
+  namespace: knative-build
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    knative.dev/crd-install: "true"
+  name: builds.build.knative.dev
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.conditions[?(@.type=="Succeeded")].status
+    name: Succeeded
+    type: string
+  - JSONPath: .status.conditions[?(@.type=="Succeeded")].reason
+    name: Reason
+    type: string
+  - JSONPath: .status.startTime
+    name: StartTime
+    type: date
+  - JSONPath: .status.completionTime
+    name: CompletionTime
+    type: date
+  group: build.knative.dev
+  names:
+    categories:
+    - all
+    - knative
+    kind: Build
+    plural: builds
+  scope: Namespaced
+  subresources:
+    status: {}
+  version: v1alpha1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    knative.dev/crd-install: "true"
+  name: buildtemplates.build.knative.dev
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
+  group: build.knative.dev
+  names:
+    categories:
+    - all
+    - knative
+    kind: BuildTemplate
+    plural: buildtemplates
+  scope: Namespaced
+  subresources:
+    status: {}
+  version: v1alpha1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    knative.dev/crd-install: "true"
+  name: clusterbuildtemplates.build.knative.dev
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .metadata.creationTimestamp
+    name: Age
+    type: date
+  group: build.knative.dev
+  names:
+    categories:
+    - all
+    - knative
+    kind: ClusterBuildTemplate
+    plural: clusterbuildtemplates
+  scope: Cluster
+  subresources:
+    status: {}
+  version: v1alpha1
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: images.caching.internal.knative.dev
+spec:
+  group: caching.internal.knative.dev
+  names:
+    categories:
+    - all
+    - knative-internal
+    - caching
+    kind: Image
+    plural: images
+    shortNames:
+    - img
+    singular: image
+  scope: Namespaced
+  subresources:
+    status: {}
+  version: v1alpha1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: build-controller
+  name: build-controller
+  namespace: knative-build
+spec:
+  ports:
+  - name: metrics
+    port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: build-controller
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    role: build-webhook
+  name: build-webhook
+  namespace: knative-build
+spec:
+  ports:
+  - port: 443
+    targetPort: 443
+  selector:
+    role: build-webhook
+
+---
+apiVersion: caching.internal.knative.dev/v1alpha1
+kind: Image
+metadata:
+  name: creds-init
+  namespace: knative-build
+spec:
+  image: gcr.io/pivotal-knative/github.com/knative/build/cmd/creds-init@sha256:209fbe10840cdc7745a188de58a5e66e7f00c39e8bb7377607f72c1eaa5b941c
+---
+apiVersion: caching.internal.knative.dev/v1alpha1
+kind: Image
+metadata:
+  name: git-init
+  namespace: knative-build
+spec:
+  image: gcr.io/pivotal-knative/github.com/knative/build/cmd/git-init@sha256:a29b09b78f04d4efc902079f26db9c8be5c3843674edf34b6d2537118b827d9c
+---
+apiVersion: caching.internal.knative.dev/v1alpha1
+kind: Image
+metadata:
+  name: gcs-fetcher
+  namespace: knative-build
+spec:
+  image: gcr.io/pivotal-knative/github.com/knative/gcs-fetcher@sha256:77f248e215e45da699d3f0b9237e65edb7c944759af4cc81f9238c48c54adc2d
+---
+apiVersion: caching.internal.knative.dev/v1alpha1
+kind: Image
+metadata:
+  name: nop
+  namespace: knative-build
+spec:
+  image: gcr.io/pivotal-knative/github.com/knative/build/cmd/nop@sha256:25aa571011a95d971f3df538fae7a336f919f153f453935477efa5c3ca3da0a9
+
+---
+apiVersion: v1
+data:
+  loglevel.controller: info
+  loglevel.creds-init: info
+  loglevel.git-init: info
+  loglevel.webhook: info
+  zap-logger-config: |
+    {
+      "level": "info",
+      "development": false,
+      "sampling": {
+        "initial": 100,
+        "thereafter": 100
+      },
+      "outputPaths": ["stdout"],
+      "errorOutputPaths": ["stderr"],
+      "encoding": "json",
+      "encoderConfig": {
+        "timeKey": "",
+        "levelKey": "level",
+        "nameKey": "logger",
+        "callerKey": "caller",
+        "messageKey": "msg",
+        "stacktraceKey": "stacktrace",
+        "lineEnding": "",
+        "levelEncoder": "",
+        "timeEncoder": "",
+        "durationEncoder": "",
+        "callerEncoder": ""
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: config-logging
+  namespace: knative-build
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: build-controller
+  namespace: knative-build
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: build-controller
+  template:
+    metadata:
+      labels:
+        app: build-controller
+    spec:
+      containers:
+      - args:
+        - -logtostderr
+        - -stderrthreshold
+        - INFO
+        - -creds-image
+        - gcr.io/pivotal-knative/github.com/knative/build/cmd/creds-init@sha256:209fbe10840cdc7745a188de58a5e66e7f00c39e8bb7377607f72c1eaa5b941c
+        - -git-image
+        - gcr.io/pivotal-knative/github.com/knative/build/cmd/git-init@sha256:a29b09b78f04d4efc902079f26db9c8be5c3843674edf34b6d2537118b827d9c
+        - -nop-image
+        - gcr.io/pivotal-knative/github.com/knative/build/cmd/nop@sha256:25aa571011a95d971f3df538fae7a336f919f153f453935477efa5c3ca3da0a9
+        - -gcs-fetcher-image
+        - gcr.io/pivotal-knative/github.com/knative/gcs-fetcher@sha256:77f248e215e45da699d3f0b9237e65edb7c944759af4cc81f9238c48c54adc2d
+        env:
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: gcr.io/pivotal-knative/github.com/knative/build/cmd/controller@sha256:e49ca8894613dc6bdf3242ebd0e3c524aa501c7088234ba5942148758c36fb83
+        name: build-controller
+        resources:
+          limits:
+            memory: 1000Mi
+        volumeMounts:
+        - mountPath: /etc/config-logging
+          name: config-logging
+      serviceAccountName: build-controller
+      volumes:
+      - configMap:
+          name: config-logging
+        name: config-logging
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: build-webhook
+  namespace: knative-build
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: build-webhook
+  template:
+    metadata:
+      labels:
+        app: build-webhook
+        role: build-webhook
+    spec:
+      containers:
+      - args:
+        - -logtostderr
+        - -stderrthreshold
+        - INFO
+        env:
+        - name: SYSTEM_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: gcr.io/pivotal-knative/github.com/knative/build/cmd/webhook@sha256:5b096550a7d36e5039d5f07f0e6495155eda169d589487912209b7b66b5a1871
+        name: build-webhook
+        resources:
+          limits:
+            memory: 1000Mi
+        volumeMounts:
+        - mountPath: /etc/config-logging
+          name: config-logging
+      serviceAccountName: build-controller
+      volumes:
+      - configMap:
+          name: config-logging
+        name: config-logging
+
+---

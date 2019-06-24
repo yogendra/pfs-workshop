@@ -1,0 +1,11 @@
+istio:
+- istio-v1.0.7-riff.yaml
+knative:
+- build.yaml
+- serving.yaml
+- clusterrole.yaml
+- eventing.yaml
+- in-memory-channel.yaml
+- riff-cnb-clusterbuildtemplate-0.2.0.yaml
+manifestVersion: "0.1"
+namespace: []
