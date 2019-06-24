@@ -1,21 +1,28 @@
-# PFS Hands on Workshop
+# Pivotal Function Service (PFS) Hands on Workshop
+
+[Product Page](http://pivotal.io/pfs) | [Knative](https://knative.dev/) | [Kubernetes](https://kubernetes.io/)
+
+This workshop will get a short and quick introduction to serverless programmin using PFS. PFS is based on knative.
 
 ## Requirement
 
-- Github account
-- Docker Hub account
+- [Github account](https://github.com)
+- Linux environment
+- _(Optional)_[Codeanywhere Account](https://codeanywhere.com/)
+- _(Optional)_[Google Cloud Platform Account](https://cloud.google.com/)
 
 ## Setup
 
-You need following tools:
+You will need following tools to complete exercises in this workshop:
 
 - Linux or Mac environment (required)
-- SSH Client (ssh or putty)
 - git
 - kubectl
 - pfs
 - curl
 - Text Editor / IDE
+
+If you do not have a linux/mac based machine, you can use one of the cloud based workspace.
 
 ## Cloud Workspace: Google Cloud Shell
 
@@ -79,11 +86,15 @@ Ones you are in the shell, follow instruction in the [Linux based host](#linux-b
 To check that you environment is configured properly, you may run following commands.
 
 ```
-kubectl cluster-info
+> kubectl cluster-info
+Kubernetes master is running at https://pfs-workshop-k8s.atwater.cf-app.com:8443
+CoreDNS is running at https://pfs-workshop-k8s.atwater.cf-app.com:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
 ```
-pfs service list
+> pfs service list
 ```
 
 ## Exercises
