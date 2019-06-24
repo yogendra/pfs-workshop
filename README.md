@@ -9,20 +9,37 @@
 
 You need following tools:
 
+- Linux or Mac environment (required)
 - SSH Client (ssh or putty)
 - git
-- pfs
 - kubectl
+- pfs
 - curl
 - Text Editor / IDE
 
-# CodeAnywhere Workspace
+## Cloud Workspace: Google Cloud Shell
 
-[CodeAnywhere](https://codeanywhere.com) provides an excellent web based IDE with terminal. This should sufficient for our usage.
+Google Cloud provides a very good browser based shell. It is free to use. You will need a Google account to access cloudshell.
+Just go to [Google Cloud Console - Cloudshell](https://console.cloud.google.com/cloudshell/editor) and follow the instructions to start cloud shell.
+
+![Google Cloud Platform - Cloudshell](images/google-cloudshell.png)
+
+Ones you are in the shell, follow instruction in the [Linux based host](#linux-based-host) section of this page to finish setup.
+
+## Cloud Workspace: CodeAnywhere
+
+[CodeAnywhere](https://codeanywhere.com) provides an excellent web based IDE with terminal. This should sufficient for our usage. Just go through the signup process. You will need to verify you email in order to start using the workspace.
+
+1. Signup using you email, github or any other social account
+1. Verify you email
+1. Create a workspace and call it pfs
+1. Run the setup commands in the [Linux based host](#linux-based-host) section to finish setting
+
+![Code Anywhere](images/codeanywhere.png)
 
 ## Linux based host
 
-- Setup kubectl
+- Setup kubectl (skip for GCP cloudshell)
 
   ```
   curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
@@ -41,61 +58,38 @@ You need following tools:
 
   ```
 
-- Fetch Kuberentes config
+- Fetch Kuberentes config for workshop.
+
   ```
-  export WS_USER=user-01
+  # Change this to you own user id given by the instructor
+  export WS_USER=CHANGE_ME
+  ```
+
+  _Following lines can be copy pasted_
+
+  ```
   mkdir -p $HOME/.kube
-  curl -sL https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/users/$WS_USER/config -o $HOME/.kube/config
+  [[ -e $HOME/.kube/config ]] && cp $HOME/.kube/config $HOME/.kube/config.original
+  curl -sL https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/users/$WS_USER/config -o \$HOME/.kube/config
+
   ```
-
-## Hosted workspace
-
-Your instructor may have setup a workshop host for you. Get the instructions from him/her. You need to log on to the hosted workspae and all the required tools and access should be already present there.
-
-## Configure Workspace on Local Machine
-
-You need to log in to the kubernetes environment to be able to run all the commands and instructions in this workshop. Your instructor should provide you with `kubernetes-host`, `username`, `password` and `namespace`.
-
-You can login to the kubernetes environemtn via following commands:\
-
-```
-
-kubectl config set-credentials workshop-user --username=<username> --password=<password>
-
-kubectl config set-cluster workshop-cluster --insecure-skip-tls-verify=true --server=https://<kubernetes-host>
-
-kubectl config set-context workshop --user=workshop-user --namespace=<namespace> --cluster=workshop-cluster
-
-kubectl config use-context workshop
-
-```
 
 ## Test Workspace Setup
 
 To check that you environment is configured properly, you may run following commands.
 
 ```
-
-kubectl get nodes
-
+kubectl cluster-info
 ```
 
 ```
-
 pfs service list
-
 ```
 
 ## Exercises
 
 [Simple Function](exercise-1.md)
 
-Create an Event based function
+[Java and JS Based Functions](exercise-2.md)
 
-```
-
-```
-
-```
-
-```
+[Channels and Subscription](exercise-3.md)
