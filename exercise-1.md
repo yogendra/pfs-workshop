@@ -1,5 +1,7 @@
 # Exercise - 1 : Simple Function
 
+[Back to Main](README.md) | [Next](exercise-2.md)
+
 **Duration: 30 min**
 
 In this exercise we will do some simple method creation, upd ate, invoke and delete it. We will use a simple shell script as our backend processing engine in this exercise.
@@ -223,3 +225,5 @@ No resources found
 
 pfs service list completed successfully
 ```
+
+[Back to Main](README.md) | [Next](exercise-2.md)
