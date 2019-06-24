@@ -33,7 +33,7 @@ function prepare_account {
   ns_image_prefix=$image_prefix/$user
 
 
-  echo pfs namespace init \
+  pfs namespace init \
     --kubeconfig $KUBECONFIG \
     --image-prefix $ns_image_prefix \
     -m $PWD/pfs-download/manifest.yaml \
