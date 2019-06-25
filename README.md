@@ -108,6 +108,8 @@ Ones you are in the shell, follow instruction in the [Linux based host](#linux-b
 
   ```
 
+  > **TIP:** Use [Cheatsheet](cheatsheet.md) for setting up your shell now or later at any point
+
 ## Test Workspace Setup
 
 To check that you environment is configured properly, you may run following commands.
