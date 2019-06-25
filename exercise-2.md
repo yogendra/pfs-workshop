@@ -35,4 +35,4 @@ As usual, lets invoke our service
 > curl 'http://greeter.default.example.com' -H 'Content-Type: text/plain' -w '\n' -d "Yogi"
 ```
 
-[Previous](exercise-1.md) | [Back to Main](README.md) | [Next](exercise-3.md)
+[Previous](exercise-1.md) | [Back to Main](README.md)
