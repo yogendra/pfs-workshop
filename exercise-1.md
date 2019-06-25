@@ -29,7 +29,7 @@ A developer will write a code in language of their choice, and pass it to the PF
 
 A docker image will be built and published on a docker registry during `create` or `update` phase. This image is used in the function deployment.
 
-### Create a function
+## Create a function
 
 First we create a function.
 
@@ -69,7 +69,7 @@ Type:                        Ready
 
 ```
 
-### Invoke a function
+## Invoke a function
 
 Lets invoke out function using `pfs` tool first.
 
@@ -160,7 +160,7 @@ NAME                                           SERVICE NAME              GENERAT
 revision.serving.knative.dev/wordcount-8wgdr   wordcount-8wgdr-service   1            True
 ```
 
-### Update a function
+## Update a function
 
 > _Note:_ Wait for the instructor to make the change befor proceeding
 
@@ -226,7 +226,7 @@ Ones the commands finished successfully, lets invoke this again.
 
 Voila! this time we don't see the skipped words in the output.
 
-### Delete a function
+## Delete a function
 
 Final part of this exercise is to remove a function. This is very simple. You just need to invoke `service delete`
 
