@@ -88,7 +88,7 @@ Ones you are in the shell, follow instruction in the [Linux based host](#linux-b
   ```
   curl -sLO https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/bin/pfs.darwin
   chmod a+x pfs.darwin
-  sudo mv pfs.linux /usr/local/bin/pfs
+  sudo mv pfs.darwin /usr/local/bin/pfs
 
   ```
 
