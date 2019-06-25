@@ -12,6 +12,21 @@ As a developer, we create a **Service** that has **Configuration** (git repo, br
 
 ![FaaS with PFS/Knative](images/serving-concept.png)
 
+## Code Journey
+
+![Function and Invokers](images/concepts-functions-and-invokers.png)
+
+A developer will write a code in language of their choice, and pass it to the PFS platform. Platform will take care of:
+
+1. Detecting the language/framework
+1. Building image with correct layers (Dependency, Invoker, Base, etc.)
+1. Create deployments
+1. Create Routes
+1. Configure scaling
+1. Configure invokers
+
+A docker image will be built and published on a docker registry during `create` or `update` phase. This image is used in the function deployment.
+
 ## Create a function
 
 First we create a function.
