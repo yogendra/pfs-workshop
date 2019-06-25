@@ -1,6 +1,6 @@
 # Exercise - 1 : Simple Function
 
-[Back to Main](README.md) | [Next](exercise-2.md)
+[Back to Main](README.md) | [Next](exercise-2.md) | [Cheatsheet](cheatsheet.md)
 
 **Duration: 30 min**
 
@@ -249,4 +249,4 @@ No resources found
 pfs service list completed successfully
 ```
 
-[Back to Main](README.md) | [Next](exercise-2.md)
+[Back to Main](README.md) | [Next](exercise-2.md) | [Cheatsheet](cheatsheet.md)

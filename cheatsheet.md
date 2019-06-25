@@ -4,6 +4,8 @@ title: Cheatsheet
 
 # Cheatsheet
 
+[Back to Home](README.md)
+
 Use the `Init Command` to initialize you shell variables and fetch config
 
 <table>
@@ -908,3 +910,5 @@ curl -sL https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/u
 </tr>
 
 </tbody>
+
+[Back to Home](README.md)

@@ -1,6 +1,6 @@
 # Exercise 2 : Java Script and Java Based Function
 
-[Previous Exercise](exercise-1.md) | [Back to Main](README.md) | [Next Exercise](exercise-3.md)
+[Previous Exercise](exercise-1.md) | [Back to Main](README.md) | [Cheatsheet](cheatsheet.md)
 
 **Duration: 30 min**
 We have so far created function with simple shell script. Lets create function using JS and Java langauge now.
@@ -35,4 +35,4 @@ As usual, lets invoke our service
 > curl 'http://greeter.default.example.com' -H 'Content-Type: text/plain' -w '\n' -d "Yogi"
 ```
 
-[Previous](exercise-1.md) | [Back to Main](README.md)
+[Previous](exercise-1.md) | [Back to Main](README.md) | [Cheatsheet](cheatsheet.md)
