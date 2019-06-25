@@ -104,7 +104,7 @@ Ones you are in the shell, follow instruction in the [Linux based host](#linux-b
   ```
   mkdir -p $HOME/.kube
   [[ -e $HOME/.kube/config ]] && cp $HOME/.kube/config $HOME/.kube/config.original
-  curl -sL https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/users/$WS_USER/config -o \$HOME/.kube/config
+  curl -sL https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/users/$WS_USER/config -o $HOME/.kube/config
 
   ```
 
