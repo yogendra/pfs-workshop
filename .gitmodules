@@ -4,3 +4,6 @@
 [submodule "code/node-square"]
 	path = code/node-square
 	url = https://github.com/yogendra/pfs-node-square.git
+[submodule "code/java-function-invoker"]
+	path = code/java-function-invoker
+	url = https://github.com/yogendra/pfs-java-function-invoker.git
