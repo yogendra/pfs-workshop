@@ -119,5 +119,3 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 [Simple Function](exercise-1.md)
 
 [Java and JS Based Functions](exercise-2.md)
-
-[Channels and Subscription](exercise-3.md)
