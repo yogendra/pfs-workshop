@@ -131,3 +131,10 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 [Simple Function](exercise-1.md)
 
 [Java and JS Based Functions](exercise-2.md)
+
+## Setup Your Own
+
+You can set up your own environment you can follow the step in the PFS documentation. My personal experience on `minikube` and _Docker for Desktop_ is very positive. I would recommend using them.
+
+- [PFS 0.1.0](https://docs.pivotal.io/pfs/0-1/) Documentation ([Next Version](https://docs.pivotal.io/pfs/0-2/))
+- [Knative](https://knative.dev/docs/) Documentation
