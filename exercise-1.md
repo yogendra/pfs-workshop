@@ -4,15 +4,17 @@
 
 **Duration: 30 min**
 
+## Introduction
+
 In this exercise we will do some simple method creation, upd ate, invoke and delete it. We will use a simple shell script as our backend processing engine in this exercise.
 
-## Concept
+### Concept
 
 As a developer, we create a **Service** that has **Configuration** (git repo, branch, name, etc) and **Route** associated with it. As we go through multiple release cycle, more revisions are created. Route is updated to send traffice to one of the revision, usualy latest.
 
 ![FaaS with PFS/Knative](images/serving-concept.png)
 
-## Code Journey
+### Code Journey
 
 ![Function and Invokers](images/concepts-functions-and-invokers.png)
 
@@ -27,7 +29,7 @@ A developer will write a code in language of their choice, and pass it to the PF
 
 A docker image will be built and published on a docker registry during `create` or `update` phase. This image is used in the function deployment.
 
-## Create a function
+### Create a function
 
 First we create a function.
 
@@ -67,7 +69,7 @@ Type:                        Ready
 
 ```
 
-## Invoke a function
+### Invoke a function
 
 Lets invoke out function using `pfs` tool first.
 
@@ -101,7 +103,7 @@ How about invoking this via url? Thats easy! Every service gets its own route. R
 
 You will need to replace `default` with your own namespace.
 
-## Whats under the hood?
+### Whats under the hood?
 
 Functio creationm creates several kubernettes objects in your namespace. Lets examine them briefly before proceeding.
 
@@ -158,7 +160,7 @@ NAME                                           SERVICE NAME              GENERAT
 revision.serving.knative.dev/wordcount-8wgdr   wordcount-8wgdr-service   1            True
 ```
 
-## Update a function
+### Update a function
 
 > _Note:_ Wait for the instructor to make the change befor proceeding
 
@@ -224,7 +226,7 @@ Ones the commands finished successfully, lets invoke this again.
 
 Voila! this time we don't see the skipped words in the output.
 
-## Delete a function
+### Delete a function
 
 Final part of this exercise is to remove a function. This is very simple. You just need to invoke `service delete`
 
