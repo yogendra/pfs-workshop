@@ -29,6 +29,7 @@ function prepare_account {
   kubectl create rolebinding ${user}-rb --serviceaccount=${ns_user_name} --clusterrole=cluster-admin -n knative-eventing
   kubectl create rolebinding ${user}-rb --serviceaccount=${ns_user_name} --clusterrole=cluster-admin -n knative-serving
   kubectl create rolebinding ${user}-rb --serviceaccount=${ns_user_name} --clusterrole=cluster-admin -n kube-system
+  kubectl create rolebinding ${user}-rb --serviceaccount=${ns_user_name} --clusterrole=cluster-admin -n istio-system
   
   ns_image_prefix=$image_prefix/$user
 
