@@ -55,17 +55,34 @@ Ones you are in the shell, follow instruction in the [Linux based host](#linux-b
   kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
   ```
 
-- Setup pfs
+  **OR on Mac**
 
   ```
-  curl -sLO https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/online-workspace/pfs.linux
+  curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/darwin/amd64/kubectl
+  chmod a+x kubectl
+  sudo mv kubectl /usr/local/bin
+  ```
+
+* Setup pfs
+
+  ```
+  curl -sLO https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/bin/pfs.linux
   chmod a+x pfs.linux
   sudo mv pfs.linux /usr/local/bin/pfs
   pfs completion bash | sudo tee /etc/bash_completion.d/pfs > /dev/null
 
   ```
 
-- Fetch Kuberentes config for workshop.
+  **OR on Mac**
+
+  ```
+  curl -sLO https://github.com/yogendra/pfs-workshop/raw/master/setup-environment/bin/pfs.darwin
+  chmod a+x pfs.darwin
+  sudo mv pfs.linux /usr/local/bin/pfs
+
+  ```
+
+* Fetch Kuberentes config for workshop.
 
   ```
   # Change this to you own user id given by the instructor
