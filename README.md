@@ -4,12 +4,22 @@
 
 This workshop will get a short and quick introduction to serverless programmin using PFS. PFS is based on knative.
 
+- K8s is Kubernetes
+- Knative is Kubernetes based serverless framework
+- Istio is a service mesh framework. It was initially designed for Kubernetes, but it can be used on other container platforms, example Cloud Foundry / Pivotal Application Service
+- Knative uses Istio to manage routing
+- PFS is based on Knative. It adds:
+  - Builds via [Cloud Native Buildpack](https://buildpack.io)
+  - Spring Invoker
+
+![PFS, Knative and Kubernetes](images/knative.png)
+
 ## Requirement
 
 - [Github account](https://github.com)
 - Linux environment
-- _(Optional)_[Codeanywhere Account](https://codeanywhere.com/)
-- _(Optional)_[Google Cloud Platform Account](https://cloud.google.com/)
+- _(Optional)_ [Codeanywhere Account](https://codeanywhere.com/)
+- _(Optional)_ [Google Cloud Platform Account](https://cloud.google.com/)
 
 ## Setup
 
