@@ -6,6 +6,12 @@
 
 In this exercise we will do some simple method creation, upd ate, invoke and delete it. We will use a simple shell script as our backend processing engine in this exercise.
 
+## Concept
+
+As a developer, we create a **Service** that has **Configuration** (git repo, branch, name, etc) and **Route** associated with it. As we go through multiple release cycle, more revisions are created. Route is updated to send traffice to one of the revision, usualy latest.
+
+![FaaS with PFS/Knative](images/serving-concept.png)
+
 ## Create a function
 
 First we create a function.
