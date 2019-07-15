@@ -1,3 +1,4 @@
 setup-environment/transaction.yaml
 .kubeconfig
 .direnv/
+pfs-download
